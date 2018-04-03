@@ -15,7 +15,13 @@ public class Date {
 	public int getYear(){
 		return this.year;
 	}
-
+	
+	public int getMonth(){
+		return this.month;
+	}
+	public int getDay(){
+		return this.day;
+	}
 	boolean isSameYear(Date another){
 		if ( this.year == another.getYear() ){
 			return true;
@@ -23,12 +29,37 @@ public class Date {
 		return false;
 	}
 	
+	boolean isSameMonth(Date another){
+		if(this.month == another.getMonth()){
+			return true;
+		}
+		return false;
+	}
+
+	boolean isSameDay(Date another){
+		if(this.day == another.getDay()){
+			return true;
+		}
+		return false;
+	}
+	
+	boolean isSame(Date another){
+		if((this.year == another.getYear()) && (this.month == another.getMonth()) && (this.day == another.getDay())){
+			return true;
+		}
+		return false;
+	}
 	public String toString(){
 		return this.day + "/" + this.month + "/" + this.year;
 	}
+	
 	public String getMonthName(){
-	String name="";
-	switch(this.month){
+		return this.getMonthName(this.getMonth());
+	}
+	
+	private String getMonthName(int i){
+	String name=null;
+	switch(i){
 	case 1:
 	name="Enero";
 	break;
