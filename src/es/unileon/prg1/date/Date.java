@@ -98,5 +98,72 @@ public class Date {
 	break;
 	}
 	return name;
-}
+	}
+	public int MonthLastDay(){
+		return this.monthLastDay(this.month);
+	}	
+	private int monthLastDay(int i){
+	int lastDay=1;
+	switch(i){
+	case 2:
+	lastDay=28;
+	break;
+
+	case 4:
+	case 6:
+	case 9:
+	case 11:
+	lastDay=30;
+	break;
+
+	case 1:
+	case 3:
+	case 5:
+	case 7:
+	case 8:
+	case 10:
+	case 12:
+	lastDay=31;
+	break;
+	}
+	return lastDay;
+	}
+	public boolean isMonthDayRight(){
+		return this.isMonthDayRight(this.month);
+	}
+	private boolean isMonthDayRight(int i){
+	boolean right=true;
+	switch(i){
+	case 2:
+		if(this.day>=1 && this.day<=28){
+		right=true;
+		}
+		else right=false;
+		break;
+	
+	case 4:
+	case 6:
+	case 9:
+	case 11:
+		if(this.day>=1 && this.day<=30){
+		right=true;
+		}
+		else right=false;
+		break;
+
+	case 1:
+	case 3:
+	case 5:
+	case 7:
+	case 8:
+	case 10:
+	case 12:
+		if(this.day>=1 && this.day<=31){
+		right=true;
+		}
+		else right=false;
+		break;
+		}
+		return right;
+		}	
 }
