@@ -5,12 +5,34 @@ public class Date {
 	private int month;
 	private int year;
 	
-	public Date(int day, int month, int year){
+	public Date(int day, int month, int year)throws DateException{
+		StringBuffer message = new StringBuffer();
+		if(day<=0){
+			message.append("Dia no valido, no pueden ser negativo - wrong value for day: " +day);
+		}
+		if(month<=0){
+			message.append("Mes no valido, no pueden ser negativo - wrong value for month: " + month);			
+		}else{
+			if(month>12){
+				message.append("Rango de valor de los meses desde 1 hasta 12, no puede ser mayor - wrong value for month: "+month);							
+			}else{
+				if(day>lastDayMonth(month)){
+					message.append("Combinacion dia/mes - wrong combination: " +day+ "/" +month);						
+				}				
+			}
+		}
+		if(year<0){
+			message.append("Año negativo - wrong value for year: " +year);			
+		}
+		
+		if (message.length()!=0){
+			throw new DateException(message.toString());
+		}else{
 		this.day = day;
 		this.month = month;
 		this.year = year;
 	}
-	
+	}
 	public int getYear(){
 		return this.year;
 	}
@@ -100,21 +122,21 @@ public class Date {
 	}
 	return name;
 	}
-	public int MonthLastDay(){
-		return this.monthLastDay(this.month);
+	public int lastDayMonth(){
+		return this.lastDayMonth(this.month);
 	}	
-	private int monthLastDay(int i){
-	int lastDay=1;
+	private int lastDayMonth(int i){
+	int day=1;
 	switch(i){
 	case 2:
-	lastDay=28;
+	day=28;
 	break;
 
 	case 4:
 	case 6:
 	case 9:
 	case 11:
-	lastDay=30;
+	day=30;
 	break;
 
 	case 1:
@@ -124,10 +146,10 @@ public class Date {
 	case 8:
 	case 10:
 	case 12:
-	lastDay=31;
+	day=31;
 	break;
 	}
-	return lastDay;
+	return day;
 	}
 	public boolean isMonthDayRight(){
 		return this.isMonthDayRight(this.month);
@@ -136,7 +158,7 @@ public class Date {
 	boolean right=true;
 	switch(i){
 	case 2:
-		if(this.day>=1 && this.day<=28){
+		if(this.day<=28){
 		right=true;
 		}
 		else right=false;
@@ -146,7 +168,7 @@ public class Date {
 	case 6:
 	case 9:
 	case 11:
-		if(this.day>=1 && this.day<=30){
+		if(this.day<=30){
 		right=true;
 		}
 		else right=false;
@@ -159,7 +181,7 @@ public class Date {
 	case 8:
 	case 10:
 	case 12:
-		if(this.day>=1 && this.day<=31){
+		if(this.day<=31){
 		right=true;
 		}
 		else right=false;
@@ -168,7 +190,7 @@ public class Date {
 		return right;
 		}
 
-	public String getSeasonMonth(){
+	public String getSeasonName(){
 	String season=null;
 	switch(this.month){
 		case 1:
@@ -201,16 +223,24 @@ public class Date {
 		return season;
 		}
 
-	public String getMonthsLeft(){
-	StringBuffer getMonthsLeft=new StringBuffer();
-	for(int i=this.month+1; i<=12; i++){
-	getMonthsLeft.append(this.getMonthName(i));
-	}
-	return getMonthsLeft.toString();
+	public String getMonthsLeft()throws DateException{
+		StringBuilder daysleft;
+		daysleft=new StringBuilder();
+		Date auxiliar;
+		int i=day;
+		auxiliar=new Date(this.day,this.month,this.year);
+			while(i<lastDayMonth()){
+				auxiliar.day++;
+				daysleft.append(auxiliar+"\n");
+				i++;
+			}
+			
+	return daysleft.toString();
 	}
 
 	public String datesLeft(){
 	StringBuffer datesLeft=new StringBuffer();
+	try{
 	for(int i=this.day+1; i<=31; i++){
 	Date left;
 	left=new Date(i,this.month,this.year);
@@ -218,7 +248,82 @@ public class Date {
 	datesLeft.append("\n"+left);
 	}
 	}
+	}catch (DateException e){
+			System.err.println("Date.datesLeft: "+e.getMessage());
+	}
 	return datesLeft.toString();
 	}
+	
+	public String sameMonthAndDay(){
+	StringBuffer sameMonthAndDay=new StringBuffer();
+	try{
+	for(int i=1;i<=12;i++){
+	Date sameDate=new Date(this.day,i,this.year);
+		if(this.lastDayMonth()==sameDate.lastDayMonth()){
+		sameMonthAndDay.append(this.getMonthName(i)+", ");
+		}
+		}
+		}catch (DateException e){
+			System.err.println("Date.sameMonthsWithSameDays: "+e.getMessage());
+	}
+		return sameMonthAndDay.toString();
+	}
+	
+	public int DaysPastYear()throws DateException{
+			int res;
+			res=0;
+			Date aux;
+			aux=new Date(1,1,this.year);
+				for(int i=1;i<this.month;i++){
+					res=res+aux.lastDayMonth();
+					aux.month=i+1;
+				}
+		return res + this.day -1;
+		}
 		
+		public int randomTriesDoWhile()throws DateException{
+			int tries,a,b,c;
+			tries=0;
+			do{
+				a= (int)(Math.random()*12) +1;
+				b= (int)(Math.random()*this.lastDayMonth()) +1;
+				c= this.year;
+				tries++;	
+
+			}while(!this.isSame(new Date(a,b,c)));
+			
+		return tries;
+		}
+
+	public String DayOfWeek()throws DateException{
+		String day=null;
+		int day;
+		Date aux;
+		aux=new Date(this.day,this.month,this.year);
+		day=aux.DaysPastOfYear()%7;
+		switch(day){
+		case 0: 
+			day="Lunes";
+		break;
+		case 1: 
+			day="Martes";
+		break;
+		case 2: 
+			day="Miercoles";
+		break;
+		case 3: 
+			day="Jueves";
+		break;
+		case 4: 
+			day="Viernes";
+		break;
+		case 5: 
+			day="Sabado";
+		break;
+		case 6: 
+			day="Domingo";
+		break;
+		}
+		return day;
+		}
 }
