@@ -15,5 +15,11 @@ public class MainDate {
 		System.out.println("Mañana el mes sera: " + tomorrow.getMonthName());
 		System.out.println("El dia " +today.getDay()+" del mes "+today.getMonth()+" es correcto? "+today.isMonthDayRight());
 		System.out.println("El dia " +tomorrow.getDay()+" del mes "+tomorrow.getMonth()+" es correcto? "+tomorrow.isMonthDayRight());
+		System.out.println("la estacion del primer mes "+today.getMonthName()+" es: "+today.getSeasonMonth());
+		System.out.println("la estacion del segundo mes "+tomorrow.getMonthName()+" es: "+tomorrow.getSeasonMonth());
+		System.out.println("quedan "+today.getMonthsLeft()+" para que acabe el anio");
+		System.out.println("quedan "+tomorrow.getMonthsLeft()+" para que acabe el anio");
+		System.out.println("fecha de hoy: "+today.toString());
+		System.out.println("fecha de mañana: "+tomorrow.toString());
 }
 }

@@ -5,7 +5,6 @@ public class Date {
 	private int month;
 	private int year;
 	
-	// Constructor mal programado: Permite crear fechas no validas
 	public Date(int day, int month, int year){
 		this.day = day;
 		this.month = month;
@@ -96,6 +95,8 @@ public class Date {
 	case 12:
 	name="Diciembre";
 	break;
+	default:
+		name="error";
 	}
 	return name;
 	}
@@ -165,5 +166,59 @@ public class Date {
 		break;
 		}
 		return right;
-		}	
+		}
+
+	public String getSeasonMonth(){
+	String season=null;
+	switch(this.month){
+		case 1:
+		case 2:
+		case 3:
+		season="invierno";
+		break;
+
+		case 4:
+		case 5:
+		case 6:
+		season="primavera";
+		break;
+
+		case 7:
+		case 8:
+		case 9:
+		season="verano";
+		break;
+
+		case 10:
+		case 11:
+		case 12:
+		season="otono";
+		break;
+
+		default:
+		season="error";
+		}
+		return season;
+		}
+
+	public String getMonthsLeft(){
+	StringBuffer getMonthsLeft=new StringBuffer();
+	for(int i=this.month+1; i<=12; i++){
+	getMonthsLeft.append(this.getMonthName(i));
+	}
+	return getMonthsLeft.toString();
+	}
+
+	public String datesLeft(){
+	StringBuffer datesLeft=new StringBuffer();
+	for(int i=this.day+1; i<=31; i++){
+	Date left;
+	left=new Date(i,this.month,this.year);
+	if(left.isMonthDayRight()==true){
+	datesLeft.append("\n"+left);
+	}
+	}
+	return datesLeft.toString();
+	}
+		
 }
